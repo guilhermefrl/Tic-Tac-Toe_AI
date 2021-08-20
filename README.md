@@ -13,4 +13,6 @@ python3 runner.py
 ```
 
 ## Gameplay
-The AI can't be defeated. In every game ends in a win or a draw for the AI.
+The AI can't be defeated. Every game ends in a win or a draw for the AI.
+
+<img src="https://i.imgur.com/qirxdYf.gif"  width="500">
