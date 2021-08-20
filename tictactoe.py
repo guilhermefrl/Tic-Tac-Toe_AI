@@ -21,7 +21,7 @@ def initial_state():
 
 def player(board):
     """
-    Retorna o jogador  que tem a próxima jogada.
+    Retorna o jogador que tem a próxima jogada.
     """
     # Nota: o X joga primeiro
 
@@ -207,6 +207,7 @@ def max_value(board):
 
     # Retornar o valor para este estado
     return v
+
 
 def min_value(board):
 
