@@ -1,5 +1,5 @@
 # Tic-Tac-Toe AI
-A tic-tac-toe game with an AI opponent using the Minimax algorithm.
+A tic-tac-toe game with an AI opponent using the Minimax Algorithm with Alpha-Beta Pruning.
 
 ## Requirements
 Run the following command to install the required Python package ([```pygame```](https://www.pygame.org/wiki/GettingStarted)):
