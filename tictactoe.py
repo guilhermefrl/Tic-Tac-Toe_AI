@@ -8,6 +8,7 @@ import copy
 X = "X"
 O = "O"
 EMPTY = None
+INF = math.inf
 
 
 def initial_state():
@@ -41,14 +42,15 @@ def player(board):
 
 def actions(board):
     """
-    Retorna um set de todas as ações (i, j) possíveis no tabuleiro
+    Retorna um array de todas as ações (i, j) possíveis no tabuleiro
     """
-    possibleActions = set()
+
+    possibleActions = []
 
     for i in range(3):
         for j in range(3):
             if board[i][j] == EMPTY:
-                possibleActions.add((i, j))
+                possibleActions.append((i, j))
 
     return possibleActions
 
@@ -137,91 +139,37 @@ def utility(board):
         return 0
 
 
-def minimax(board):
+def alfabeta(board, alpha, beta):
     """
-    Retorna a ação ótima para o jogador atual.
+    Algoritmo Alpha-Beta Pruning
     """
-
     # Caso o jogo tenha terminado
     if terminal(board):
-        return None
+        return utility(board),None
 
-    action_results = []
-    count = 0
-    count_aux = 0
-
-    # Caso seja a vez do jogador X
+    # Caso seja a vez da AI
     if player(board) == X:
-        # Para todas as ações possíveis, retornar a maior possível
+        value = -INF
+        best_action = -1
         for action in actions(board):
-            action_results.append(min_value(result(board, action)))
-
-        aux = max(action_results)
-
-        for row in action_results:
-            if row == aux:
+            v1 = alfabeta(result(board, action), alpha, beta)[0]
+            if v1 > value:
+                value = v1
+                best_action = action
+            alpha = max(alpha,value)
+            if alpha >= beta:
                 break
-
-            count +=1
-
-        for action in actions(board):
-            if count_aux == count:
-                return action
-
-            count_aux += 1
-
-    # Caso seja a vez do jogador O
+        return value,best_action
+    # Caso seja a vez do jogador
     else:
-        # Para todas as ações possíveis, retornar a menor possível
+        value = INF
+        best_action = 1
         for action in actions(board):
-            action_results.append(max_value(result(board, action)))
-
-        aux = min(action_results)
-
-        for row in action_results:
-            if row == aux:
+            v1 = alfabeta(result(board, action), alpha, beta)[0]
+            if v1 < value:
+                value = v1
+                best_action = action
+            beta = min(beta,value)
+            if alpha >= beta:
                 break
-
-            count +=1
-
-        for action in actions(board):
-            if count_aux == count:
-                return action
-
-            count_aux += 1
-
-
-def max_value(board):
-
-    # Caso seja um estado terminal
-    if terminal(board):
-        return utility(board)
-
-    # Caso o jogo não esteja terminado
-    # Colocar v a menos infinito
-    v = -math.inf
-
-    # Para todos os estados, saber a ação que vai maximizar o resultado, dado o que o oponente vai fazer
-    for action in actions(board):
-        v = max(v, min_value(result(board, action)))
-
-    # Retornar o valor para este estado
-    return v
-
-
-def min_value(board):
-
-    # Caso seja um estado terminal
-    if terminal(board):
-        return utility(board)
-
-    # Caso o jogo não esteja terminado
-    # Colocar v a infinito
-    v = math.inf
-
-    # Para todos os estados, saber a ação que vai minimizar o resultado, dado o que o oponente vai fazer
-    for action in actions(board):
-        v = min(v, max_value(result(board, action)))
-
-    # Retornar o valor para este estado
-    return v
+        return value,best_action
